@@ -48,12 +48,12 @@ async function run() {
     const productsCollection = client.db("birdly").collection("products");
 
     app.get("/products", async (req, res) => {
-      const query = {};
+      /* const query = {};
       const cursor = productsCollection.find(query);
       let items;
       items = await cursor.toArray();
-      console.log(items);
-      res.send(items);
+      console.log(items); */
+      res.send({message : 'product api runing'});
     });
   } finally {
     /* await client.close(); */
