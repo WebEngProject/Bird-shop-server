@@ -23,6 +23,11 @@ const model = new teachableMachine({
   modelUrl: process.env.modelUrl,
 });
 
+app.get('/test' , async(req,res)=>
+{
+  res.send({message : "hello test"})
+})
+
 app.post("/classification", async (req, res) => {
   const url = req.body.url;
 
