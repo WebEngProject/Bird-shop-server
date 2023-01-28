@@ -51,6 +51,7 @@ async function run() {
   try {
     
     const productsCollection = client.db("birdly").collection("products");
+    const familyCollection = client.db("birdly").collection("family");
 
     app.get("/products", async (req, res) => {
        const query = {};
@@ -60,6 +61,17 @@ async function run() {
       console.log(items); 
       res.send(items);
     });
+
+
+    app.get("/family" ,async(req , res) =>
+    {
+      const query = {};
+      const cursor = productsCollection.find(query);
+      let items;
+      items = await cursor.toArray();
+      console.log(items); 
+      res.send(items);
+    })
   } finally {
     /* await client.close(); */
   }
