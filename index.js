@@ -66,7 +66,7 @@ async function run() {
     app.get("/family" ,async(req , res) =>
     {
       const query = {};
-      const cursor = productsCollection.find(query);
+      const cursor = familyCollection.find(query);
       let items;
       items = await cursor.toArray();
       console.log(items); 
