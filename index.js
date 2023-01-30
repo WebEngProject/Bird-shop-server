@@ -19,59 +19,55 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
-const model = new teachableMachine({
-  modelUrl: process.env.modelUrl,
-});
-
-app.get('/test' , async(req,res)=>
-{
-  res.send({message : "hello"})
-})
-
-app.post("/classification", async (req, res) => {
-  const url = req.body.url;
-
-  console.log(url);
-
-  return model
-    .classify({
-      imageUrl: url,
-    })
-    .then((predictions) => {
-      console.log(predictions);
-      return res.send(predictions);
-    })
-    .catch((e) => {
-      console.error(e);
-      res.status(500).send("Something went wrong!");
-    });
+app.get("/test", async (req, res) => {
+  res.send({ message: "hello" });
 });
 
 async function run() {
   try {
-    
+    const model = new teachableMachine({
+      modelUrl: process.env.modelUrl,
+    });
+
     const productsCollection = client.db("birdly").collection("products");
     const familyCollection = client.db("birdly").collection("family");
 
     app.get("/products", async (req, res) => {
-       const query = {};
+      const query = {};
       const cursor = productsCollection.find(query);
       let items;
       items = await cursor.toArray();
-      console.log(items); 
+      console.log(items);
       res.send(items);
     });
 
-
-    app.get("/family" ,async(req , res) =>
-    {
+    app.get("/family", async (req, res) => {
       const query = {};
       const cursor = familyCollection.find(query);
       let items;
       items = await cursor.toArray();
-      console.log(items); 
+      console.log(items);
       res.send(items);
-    })
+    });
+
+    app.post("/classification", async (req, res) => {
+      const url = req.body.url;
+
+      console.log(url);
+
+      return model
+        .classify({
+          imageUrl: url,
+        })
+        .then((predictions) => {
+          console.log(predictions);
+          return res.send(predictions);
+        })
+        .catch((e) => {
+          console.error(e);
+          res.status(500).send("Something went wrong!");
+        });
+    });
   } finally {
     /* await client.close(); */
   }
@@ -84,11 +80,9 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  client.connect(err => {
-    if(err)
-        console.log(err);
-    else
-        console.log('Database Connected Successfully');
-});
+  client.connect((err) => {
+    if (err) console.log(err);
+    else console.log("Database Connected Successfully");
+  });
   console.log("Birdly running in port ", port);
 });
