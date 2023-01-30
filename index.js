@@ -19,9 +19,7 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
-app.get("/test", async (req, res) => {
-  res.send({ message: "hello" });
-});
+
 
 async function run() {
   try {
@@ -48,6 +46,9 @@ async function run() {
       items = await cursor.toArray();
       console.log(items);
       res.send(items);
+    });
+    app.get("/test", async (req, res) => {
+      res.send({ message: "hello" , model : model });
     });
 
     app.post("/classification", async (req, res) => {
